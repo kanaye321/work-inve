@@ -1,0 +1,124 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Component {
+  id            String   @id @default(cuid())
+  name          String
+  type          String
+  serialNumber  String
+  model         String
+  manufacturer  String
+  capacitySpecs String?
+  category      String
+  status        String
+  assignedTo    String?
+  releasedBy    String?
+  dateReleased  String?
+  returnedTo    String?
+  dateReturned  String?
+  purchaseDate  String
+  purchaseCost  Float
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Accessory {
+  id                Int      @id @default(autoincrement())
+  name              String
+  category          String
+  model             String?
+  manufacturer      String?
+  status            String
+  quantity          Int
+  quantityAvailable Int
+  purchaseDate      String?
+  purchaseCost      Float?
+  assignedTo        String?
+  releasedBy        String?
+  dateReleased      String?
+  returnedTo        String?
+  dateReturned      String?
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Asset {
+  id             Int      @id @default(autoincrement())
+  assetTag       String
+  model          String
+  serialNumber   String
+  macAddress     String
+  ipAddress      String
+  status         String
+  financeChecked Boolean
+  assignedTo     String
+  dateReleased   String
+  releasedBy     String
+  category       String
+  manufacturer   String
+  location       String
+  notes          String
+  createdAt      DateTime @default(now())
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String    @unique
+  role       String // required
+  department String?
+  position   String?
+  phone      String?
+  location   String?
+  isActive   Boolean   @default(true)
+  isAdmin    Boolean   @default(false)
+  lastLogin  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model VMInventory {
+  id               String   @id @default(cuid())
+  startDate        DateTime
+  endDate          DateTime
+  validity         String
+  hypervisor       String
+  hostname         String
+  hostModel        String
+  hostIpAddress    String
+  hostOS           String
+  rack             String
+  vmId             String
+  vmName           String
+  vmStatus         String
+  vmIpAddress      String
+  internetAccess   Boolean
+  vmOS             String
+  vmOSVersion      String
+  deployedBy       String
+  user             String
+  department       String
+  jiraTicketNumber String
+  remarks          String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+model ActivityLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  itemType  String
+  itemId    Int
+  details   String
+  createdAt DateTime @default(now())
+}
